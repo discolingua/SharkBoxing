@@ -44,8 +44,8 @@ package
 			level = new Level();
 			add(level);
 			
-//			boxer = new Boxer;
-//			add(boxer);
+			boxer = new Boxer;
+			add(boxer);
 //			
 //			FP.world.add(new HUD);
 		}
@@ -53,12 +53,12 @@ package
 		
 		override public function update():void
 		{
-			move();
+			super.update();
 		}
 		
-		private function move():void
+		override public function render():void
 		{
-
+			super.render();
 		}
 	}
 }
