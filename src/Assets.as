@@ -10,6 +10,6 @@ package
 		
 		// sprites
 		
-		[Embed(source = "assets/graphics/boxer_neutral.png")] public static const SPR_BOXER:Class;
+		[Embed(source = "assets/graphics/boxer_spritesheet.png")] public static const SPR_BOXER:Class;
 	}
 }
