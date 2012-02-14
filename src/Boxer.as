@@ -25,7 +25,7 @@ package
 		
 		private var boxerSprite:Spritemap = new Spritemap(Assets.SPR_BOXER, 150, 300);
 		
-		public function Boxer():void {
+		public function Boxer() {
 			layer = 50;
 			graphic = boxerSprite;
 			x = 60;
@@ -33,15 +33,12 @@ package
 			type = "boxer";
 		}
 		
-		override public function update():void {
+		override public function update():void{
 			move();
 		}
 		
 		private function move():void {
-			var newX:Number;
-			var newY:Number;
-			var mySpeed:Number = maxVel * FP.elapsed;
-
+			
 			punchCooldown > 0 ? punchCooldown-- : 0;
 			blockCooldown > 0 ? blockCooldown-- : 0;
 			crouchCooldown > 0 ? crouchCooldown-- : 0;
@@ -74,10 +71,11 @@ package
 					if (y == floorY) { crouch(); }
 				}
 			} 
-				
+			
 			// position = position + ( verticalVelocity + initialVerticalVelocity ) * 0.5 * dt;
 			x += xVel * FP.elapsed;
 			y += yVel * FP.elapsed;
+			
 			if (xVel < 0) { xVel += 1; } else if (xVel > 0) { xVel -= 1; } // decelerate xVel
 			if (y < floorY) { 
 				yVel += gravityConstant; 
@@ -85,7 +83,12 @@ package
 				y = floorY;
 				yVel = 0;
 			}
-
+			
+			// scroll camera
+			if ( (abs(xVel) > 0) && x > 100 ) {
+				FP.camera.x = x - 100;
+			}
+			
 		}
 		
 		private function abs( value:Number ):Number	{

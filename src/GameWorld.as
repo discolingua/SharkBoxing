@@ -7,6 +7,7 @@ package
 	{
 		
 		public static var boxer:Boxer;
+		public static var shark:Shark;
 		public static var level:Level;
 		
 		public function GameWorld()
@@ -46,6 +47,9 @@ package
 			
 			boxer = new Boxer;
 			add(boxer);
+			
+			shark = new Shark;
+			add(shark);
 //			
 //			FP.world.add(new HUD);
 		}
