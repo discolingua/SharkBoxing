@@ -17,9 +17,11 @@ package
 		private var floorY:Number = 250;        // y value of floor coord
 		
 		private var punchDuration:Number = 10;
-		private var blockDuration:Number = 60;
+		private var blockDuration:Number = 20;
+		private var crouchDuration:Number = 10;
 		private var punchCooldown:Number = 0;
 		private var blockCooldown:Number = 0;
+		private var crouchCooldown:Number = 0;
 		
 		private var boxerSprite:Spritemap = new Spritemap(Assets.SPR_BOXER, 150, 300);
 		
@@ -41,8 +43,10 @@ package
 			var mySpeed:Number = maxVel * FP.elapsed;
 
 			punchCooldown > 0 ? punchCooldown-- : 0;
+			blockCooldown > 0 ? blockCooldown-- : 0;
+			crouchCooldown > 0 ? crouchCooldown-- : 0;
 			
-			if (punchCooldown == 0){
+			if (punchCooldown + blockCooldown == 0){
 				setAnimation();
 				if (Input.check(Key.RIGHT))	{
 					if (xVel < maxVel) {
@@ -58,8 +62,16 @@ package
 					if (y == floorY) { yVel -= 180; }
 				}
 				
-				if (Input.pressed(Key.D) && punchCooldown == 0) {
+				if (Input.pressed(Key.D)) {
 					punch();
+				}
+				
+				if (Input.pressed(Key.A)) {
+					block();
+				}
+				
+				if (Input.check(Key.DOWN)){
+					if (y == floorY) { crouch(); }
 				}
 			} 
 				
@@ -70,7 +82,7 @@ package
 			if (y < floorY) { 
 				yVel += gravityConstant; 
 			} else if (y > floorY) {
-				y = 250;
+				y = floorY;
 				yVel = 0;
 			}
 
@@ -84,13 +96,28 @@ package
 		{
 			// function to set animation frame for walking, punch/block recovery, etc.
 			
-			boxerSprite.setFrame(0);
+			if((!Input.check(Key.DOWN)) && crouchCooldown == 0) {    //crouch check
+				boxerSprite.setFrame(0);
+			}
 		}
 		
 		private function punch():void {
 			punchCooldown = punchDuration;
 			boxerSprite.setFrame(1);
+			xVel /= 2;
 			
+		}
+		
+		private function block():void {
+			blockCooldown = blockDuration;
+			boxerSprite.setFrame(2);
+			if (y == floorY) { xVel = 0; }
+		}
+		
+		private function crouch():void {
+			crouchCooldown = crouchDuration;
+			boxerSprite.setFrame(3);
+			xVel = 0;
 		}
 	}
 }
